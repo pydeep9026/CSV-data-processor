@@ -9,17 +9,12 @@ CORS(app)
 
 @app.route('/process-csv', methods=['POST'])
 def process_csv():
-    # Retrieve the uploaded file from the request
     file = request.files['file']
 
-    # Save the uploaded file to disk
     file_path = 'uploaded_file.csv'
     file.save(file_path)
  
-    # Load the data
     data = pd.read_csv(file_path)
-
-    # Convert the index to a DatetimeIndex if Date column exists
     if "Date" in data.columns:
         data.index = pd.to_datetime(data["Date"])
         data = data.drop("Date", axis=1)
